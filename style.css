@@ -1,0 +1,251 @@
+@charset "UTF-8";
+/*Убрал все отступы*/
+* {
+  margin: 0 0;
+}
+
+/* Выставил высоту и ширину страницы*/
+body {
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+}
+
+/*Создание задачи*/
+.taskmanager {
+  width: 80vw;
+  background-color: #DCDCDC;
+}
+
+._addTask {
+  height: 10vh;
+  display: flex;
+  opacity: 0;
+  transition: 0.2s;
+  animation: show 2s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+._filterTasks {
+  height: 20vh;
+  margin-top: 1vh;
+  opacity: 0;
+  transition: 0.5s;
+  animation: show 2s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+._Tasks {
+  height: 65vh;
+  margin-top: 2vh;
+  opacity: 0;
+  transition: 0.8s;
+  animation: show 2s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+.inputTask, .SortData, .SortPrior {
+  height: 4vh;
+  border-radius: 0.1em;
+  border: 0.01em solid gray;
+  padding: 0;
+  margin-top: 2px;
+}
+
+._inputTaskPriority, ._SortDataUp, ._SortPriorUp {
+  width: 12vw;
+}
+
+._inputTaskText {
+  width: 28vw;
+  text-indent: 10px;
+}
+
+._addButton {
+  margin-top: 2.9vh;
+  width: 12vw;
+  background-color: green;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h5 {
+  font-size: 2vh;
+  font-family: "Montserrat", sans-serif;
+  color: #696969;
+}
+
+.createBlock {
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.createTask {
+  height: inherit;
+  display: flex;
+  width: inherit;
+  justify-content: space-around;
+}
+
+/*Блок фильтров и сортировок*/
+.__inputTaskPriorityFilter, ._SortDataUp {
+  margin-left: 2vw;
+}
+
+._SortDataUp, .SortPrior {
+  background-color: white;
+  text-align: center;
+}
+
+.filterBoxTop {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 6vh;
+}
+
+.filterBoxTopRightTop, .filterBoxTopRightBottom {
+  display: flex;
+  height: 2vh;
+  align-items: baseline;
+  margin-bottom: 1.2vh;
+}
+
+.FilterCheckBoxName {
+  margin-left: 0.5vw;
+  height: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.FilterCheckBox {
+  margin-left: 0.5vw;
+}
+
+.__SortActive {
+  border: 2px solid black;
+}
+
+.filterBoxTopRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.SortPrior {
+  margin-left: 1vw;
+}
+
+.searchText {
+  width: 65vw;
+}
+
+.filterBoxBottom {
+  display: flex;
+  justify-content: space-around;
+}
+
+._filterTasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.filterBoxTopLeftRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.filterBoxTopLeft {
+  display: flex;
+}
+
+.filterBoxTopLeftLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+/*Блок с задачами*/
+._Tasks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+
+.TaskBlockPriority {
+  min-width: 11vw;
+}
+
+.greenPriority {
+  color: green;
+}
+
+.yellowPriority {
+  color: darkorange;
+}
+
+.redPriority {
+  color: darkred;
+}
+
+.TaskBlock {
+  width: inherit;
+  min-height: 20vh;
+  margin: 3vh 0vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 4vh;
+}
+
+.unvisibleP {
+  display: none;
+}
+
+.TaskBlockCard {
+  width: 55vw;
+  min-width: 40vw;
+  min-height: inherit;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.TaskBlockCardTop {
+  display: flex;
+  justify-content: space-between;
+  width: 52vw;
+}
+
+.TaskBlockCardTime {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2vh;
+}
+
+/*# sourceMappingURL=style.css.map */

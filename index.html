@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <title>Task Tracker</title>
+</head>
+<body>
+
+<main>
+    <section class="taskmanager _addTask">
+        <form action="#" class="createTask">
+            <section class="createBlock">
+                <h5>Приоритет:</h5>
+                <select name="createTaskPriority" id="createTaskPriority" class="inputTask _inputTaskPriority">
+                    <option value="1">Низкий</option>
+                    <option value="2" selected>Средний</option>
+                    <option value="3">Высокий</option>
+                </select>
+            </section>
+            <section class="createBlock">
+                <h5>Текст задачи: </h5>
+                <input type="text" placeholder="Введите текст..." class="inputTask _inputTaskText" id="TextField">
+            </section>
+            <section class="createBlock">
+                <!-- <button class="inputTask _addButton">Добавить задачу</button> -->
+                <aside id="addTaskButton" class="inputTask _addButton">Добавить задачу </aside>
+
+            </section>
+        </form>
+    </section>
+    <form action="#" class="taskmanager _filterTasks">
+        <section class="filterBoxTop">
+            <section class="filterBoxTopLeft">
+                <section class="filterBoxTopLeftLeft">
+                    <h5>Фильтр по приоритету:</h5>
+                    <h5>Сортировка по дате:</h5>
+                </section>
+                <section class="filterBoxTopLeftRight">
+                    <select name="" id="selectPriorityFilter" class="inputTask _inputTaskPriority __inputTaskPriorityFilter">
+                        <option value="Anyone" Selected>Любой</option>
+                        <option value="Low">Низкий</option>
+                        <option value="Middle">Средний</option>
+                        <option value="High">Высокий</option>
+                    </select>
+                    <div class="SortData _SortDataUp">Дата создания
+                        &#129045
+                        <!--&#129047--></div>
+                </section>
+            </section>
+            <section class="filterBoxTopRight">
+                <section class="filterBoxTopRightTop">
+                    <h5>Фильтр по статусу:  </h5>
+                    <h5 class="FilterCheckBoxName">Активные <input type="checkbox" name="xz" value="active" class="FilterCheckBox" id="FilterCheckBoxActive" checked></h5>
+                    <h5 class="FilterCheckBoxName">Завершённые <input type="checkbox" name="xz" value="done" class="FilterCheckBox" id="FilterCheckBoxDone" checked></h5>
+                </section>
+                <section class="filterBoxTopRightBottom">
+                    <h5>Сортировка по приоритету:</h5>
+                    <div class="SortPrior _SortPriorUp __SortActive">Приоритет
+                        &#129045
+                        <!--&#129047--></div>
+                </section>
+            </section>
+        </section>
+        <section class="filterBoxBottom">
+    <h5>Поиск задачи по тексту:</h5>
+            <input type="text" placeholder="Начните вводить текст задачи:" class="searchText">
+        </section>
+    </form>
+    <section class="taskmanager _Tasks">
+
+
+
+
+    </section>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
