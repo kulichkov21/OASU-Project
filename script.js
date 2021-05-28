@@ -7,15 +7,33 @@ let textfield = document.getElementById('TextField');
 let tasksBlock = document.querySelector('._Tasks');
 let TasksCards;
 let CheckMark;
+let DeleteBox;
+let SortByPriority = document.getElementById('SortPrior');
+let SortByDate = document.getElementById('SortData');
 let filterStatusActive = document.getElementById('FilterCheckBoxActive');
 let filterStatusDone = document.getElementById('FilterCheckBoxDone');
 let tasks = []; //Массив задач
 
-
-function Update(){
-CheckMark = document.querySelectorAll('.TaskBlockCardDone');
+function Clean() {
+    while (tasksBlock.firstChild) {
+        tasksBlock.removeChild(tasksBlock.firstChild);
+    }
 }
 
+function Recheck() {
+    if (tasks[0]){
+        tasks[0].Sort();
+    }
+    for (let i = 0; i < tasks.length; i++) {
+        tasks[i].PriorityFilter();
+    }
+}
+
+function Update() {
+    CheckMark = [];
+    CheckMark = document.querySelectorAll('.TaskBlockCardDone');
+    DeleteBox = document.querySelectorAll('.deleteTask');
+}
 
 //Создаём функцию-конструктор объекта задач
 class Task {
@@ -27,67 +45,64 @@ class Task {
         this.done = false;
         this.date = new Date();
     }
-    FormatMinutes(){
+
+    FormatMinutes() {
         if (this.date.getMinutes() > 9) {
             return this.date.getMinutes();
-        }
-        else{
-            switch (this.date.getMinutes()){
-                case 0:
-                    return '00';
-                    break;
-                case 1:
-                    return '01';
-                    break;
-                case 2:
-                    return '02';
-                    break;
-                case 3:
-                    return '03';
-                    break;
-                case 4:
-                    return '04';
-                    break;
-                case 5:
-                    return '05';
-                    break;
-                case 6:
-                    return '06';
-                    break;
-                case 7:
-                    return '07';
-                    break;
-                case 8:
-                    return '08';
-                    break;
-                case 9:
-                    return '09';
-                    break;
-            }
+        } else {
+            return '0' + this.date.getMinutes()
         }
     }
+
     Draw() {
         tasksBlock.insertAdjacentHTML('afterbegin', this.generateHTML());
         Update();
-
-
+        if (CheckMark[0]) {
+            CheckMark[0].addEventListener('click', function () {
+                    event.target.parentNode.parentNode.classList.add('greenTask');
+                    event.target.style.display = 'none';
+                    for (let task of tasks) {
+                        if (task.id == event.target.parentNode.parentNode.parentNode.id) {
+                            task.Done();
+                        }
+                    }
+                }
+            )
+        }
+        if (DeleteBox[0]) {
+            DeleteBox[0].addEventListener('click', function () {
+                event.target.parentNode.parentNode.style.display = 'none';
+                for (let i = 0; i < tasks.length; i++) {
+                    if (tasks[i].id == event.target.parentNode.parentNode.id) {
+                        tasks.splice(i, 1);
+                    }
+                }
+            })
+        }
     }
 
-    getData(){
-        return `${this.date.getDate()}.${this.date.getMonth() + 1}.${this.date.getFullYear()} `;
+    getData() {
+        return `${this.date.getDate()}.${this.date.getMonth() + 1}.${this.date.getFullYear()} ${this.date.getHours()}:${this.FormatMinutes()}`;
     }
-    getTime(){
-        return `${this.date.getHours()}:${this.FormatMinutes()}`;
-    }
+
 //функция получения даты
     //функция получения времени (резалт обеих юзать в отрисовке)
     generateHTML() {
-        return ` <section class="TaskBlock" id="${this.id}"> 
+        if (this.done) {
+            return ` <section class="TaskBlock" id="${this.id}"> 
                 <p class="TaskBlockPriority ${this.priorityColor()}">${this.convertPriority()}</p>
-                <section class="TaskBlockCard"><div class="TaskBlockCardTop">${this.text} <div class="TaskBlockCardDone">&#10004;</div></div>
-                <p class="TaskBlockCardTime">${this.getData()} ${this.getTime()}</p></section>
+                <section class="TaskBlockCard greenTask"><div class="TaskBlockCardTop">${this.text}</div>
+                <p class="TaskBlockCardTime">${this.getData()}</p></section>
                 <aside class="deleteTask"><img src="image/delete.svg" alt="delete" style="height: 8vh"></aside>
                </section>`
+        } else {
+            return ` <section class="TaskBlock" id="${this.id}"> 
+                <p class="TaskBlockPriority ${this.priorityColor()}">${this.convertPriority()}</p>
+                <section class="TaskBlockCard"><div class="TaskBlockCardTop">${this.text} <div class="TaskBlockCardDone">&#10004</div></div>
+                <p class="TaskBlockCardTime">${this.getData()}</p></section>
+                <aside class="deleteTask"><img src="image/delete.svg" alt="delete" style="height: 8vh"></aside>
+               </section>`
+        }
     }
 
     convertPriority() {
@@ -103,8 +118,9 @@ class Task {
                 break;
         }
     }
-    priorityColor(){
-        switch (this.priority){
+
+    priorityColor() {
+        switch (this.priority) {
             case '1':
                 return 'redPriority';
                 break;
@@ -117,8 +133,8 @@ class Task {
         }
     }
 
-    takingUserPriority(){
-        switch (this.priority){
+    takingUserPriority() {
+        switch (this.priority) {
             case '1':
                 return 'Low';
                 break;
@@ -130,27 +146,45 @@ class Task {
                 break;
         }
     }
+
+    Sort() {
+       if (SortByPriority.classList.contains('__SortActive')){
+           if (SortByPriority.classList.contains('_SortPriorUp')){
+               tasks.sort((a, b) => a.priority > b.priority ? 1 : -1);
+           }
+           else {
+               tasks.sort((a, b) => a.priority < b.priority ? 1 : -1);
+           }
+       }
+       else{
+           if (SortByDate.classList.contains('_SortDataUp')){
+               tasks.sort((a, b) => a.date > b.date ? 1 : -1);
+           }
+           else {
+               tasks.sort((a, b) => a.date < b.date ? 1 : -1);
+           }
+       }
+    }
+
 //Получение всех элементов задач
     //Фильтр по приоритету
-    PriorityFilter(){
+    PriorityFilter() {
         //Получаем все критерии фильтров
-
+        this.Sort()
         let filter = 'Anyone';
         filter = this.takingUserPriority();
-        if(filterStatusDone.checked == false && filterStatusActive.checked == false){
-        }
-       else if ((this.takingUserPriority() == selectPriorityFilter.value || selectPriorityFilter.value == 'Anyone') && ((this.done == filterStatusDone.checked) || (this.active == filterStatusActive.checked))){
+        if (!filterStatusDone.checked && !filterStatusActive.checked) {
+        } else if ((this.takingUserPriority() == selectPriorityFilter.value || selectPriorityFilter.value == 'Anyone') && ((this.done == filterStatusDone.checked) || (this.active == filterStatusActive.checked))) {
             this.Draw();
         }
 
     }
-        //Выполнение задачи
-    Done(){
 
+    //Выполнение задачи
+    Done() {
+        this.done = true;
+        this.active = false;
     }
-
-
-
 }
 
 addButton.addEventListener('click', function () {
@@ -159,42 +193,64 @@ addButton.addEventListener('click', function () {
     let id = Math.round(Math.random() * 10000000);
     let task = new Task(priority, text, id);
     tasks.push(task);
-    task.Draw();
+    Clean();
+    Recheck();
     Update();
-
 });
 
-selectPriorityFilter.addEventListener('change', function (){
-    while (tasksBlock.firstChild) {
-        tasksBlock.removeChild(tasksBlock.firstChild);
-    }
-     TasksCards = document.querySelectorAll('.TaskBlock');
-    for (let i = 0; i < tasks.length; i++){
-        tasks[i].PriorityFilter();
-    }
+selectPriorityFilter.addEventListener('change', function () {
+    Clean();
+    Update();
+    TasksCards = document.querySelectorAll('.TaskBlock');
+    Recheck();
 });
-filterStatusActive.addEventListener('change', function (){
-    while (tasksBlock.firstChild) {
-        tasksBlock.removeChild(tasksBlock.firstChild);
+
+filterStatusActive.addEventListener('change', function () {
+    Clean();
+    Recheck();
+    Update();
+});
+
+filterStatusDone.addEventListener('change', function () {
+    Clean();
+    Recheck();
+    Update();
+});
+
+SortByPriority.addEventListener('click', function () {
+    if (!SortByPriority.classList.contains('__SortActive')) {
+        SortByPriority.classList.add('__SortActive');
+        SortByDate.classList.remove('__SortActive');
     }
-    for (let i = 0; i < tasks.length; i++){
-        tasks[i].PriorityFilter();
+    if (SortByPriority.classList.contains('_SortPriorUp')){
+        SortByPriority.classList.remove('_SortPriorUp');
+        SortByPriority.classList.add('_SortPriorDown');
     }
-
-})
-filterStatusDone.addEventListener('change', function (){
-    while (tasksBlock.firstChild) {
-        tasksBlock.removeChild(tasksBlock.firstChild);
+    else {
+        SortByPriority.classList.remove('_SortPriorDown');
+        SortByPriority.classList.add('_SortPriorUp');
+    };
+    Clean();
+    Recheck();
+    Update();
+});
+SortByDate.addEventListener('click', function () {
+    if (!SortByDate.classList.contains('__SortActive')) {
+        SortByDate.classList.add('__SortActive');
+        SortByPriority.classList.remove('__SortActive');
     }
-    for (let i = 0; i < tasks.length; i++){
-        tasks[i].PriorityFilter();
+    if (SortByDate.classList.contains('_SortDataUp')){
+        SortByDate.classList.remove('_SortDataUp');
+        SortByDate.classList.add('_SortDataDown');
     }
-
-})
-
-
-
-
+    else {
+        SortByDate.classList.remove('_SortDataDown');
+        SortByDate.classList.add('_SortDataUp');
+    }
+    Clean();
+    Recheck();
+    Update();
+});
 
 
 console.log(tasks);

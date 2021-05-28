@@ -69,8 +69,26 @@ main {
   margin-top: 2px;
 }
 
-._inputTaskPriority, ._SortDataUp, ._SortPriorUp {
+._inputTaskPriority, ._SortDataUp, ._SortPriorUp, ._SortPriorDown, ._SortDataDown {
   width: 12vw;
+  background-color: white;
+  text-align: center;
+}
+
+._SortPriorUp::after {
+  content: "↑";
+}
+
+._SortDataUp::after {
+  content: "↑";
+}
+
+._SortPriorDown::after {
+  content: "↓";
+}
+
+._SortDataDown::after {
+  content: "↓";
 }
 
 ._inputTaskText {
@@ -109,13 +127,8 @@ h5 {
 }
 
 /*Блок фильтров и сортировок*/
-.__inputTaskPriorityFilter, ._SortDataUp {
+.__inputTaskPriorityFilter, ._SortDataUp, ._SortDataDown {
   margin-left: 2vw;
-}
-
-._SortDataUp, .SortPrior {
-  background-color: white;
-  text-align: center;
 }
 
 .filterBoxTop {
@@ -144,7 +157,7 @@ h5 {
 }
 
 .__SortActive {
-  border: 2px solid black;
+  outline: 2px solid black;
 }
 
 .filterBoxTopRight {
@@ -193,7 +206,7 @@ h5 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
+  overflow-x: auto;
 }
 
 .TaskBlockPriority {
@@ -246,6 +259,10 @@ h5 {
 .TaskBlockCardTime {
   font-family: "Montserrat", sans-serif;
   font-size: 2vh;
+}
+
+.greenTask {
+  background-color: yellowgreen;
 }
 
 /*# sourceMappingURL=style.css.map */

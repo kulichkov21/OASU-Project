@@ -50,8 +50,18 @@ main
   border: 0.01em solid gray
   padding: 0
   margin-top: 2px
-._inputTaskPriority, ._SortDataUp, ._SortPriorUp
+._inputTaskPriority, ._SortDataUp, ._SortPriorUp, ._SortPriorDown, ._SortDataDown
   width: 12vw
+  background-color: white
+  text-align: center
+._SortPriorUp::after
+  content: "\2191"
+._SortDataUp::after
+  content: "\2191"
+._SortPriorDown::after
+  content: "\2193"
+._SortDataDown::after
+  content: "\2193"
 ._inputTaskText
   width: 28vw
   text-indent: 10px
@@ -79,11 +89,8 @@ h5
   justify-content: space-around
 /*Блок фильтров и сортировок*/
 
-.__inputTaskPriorityFilter,._SortDataUp
+.__inputTaskPriorityFilter,._SortDataUp, ._SortDataDown
   margin-left: 2vw
-._SortDataUp, .SortPrior
-  background-color: white
-  text-align: center
 .filterBoxTop
   display: flex
   justify-content: space-around
@@ -102,7 +109,7 @@ h5
 .FilterCheckBox
   margin-left: 0.5vw
 .__SortActive
-  border: 2px solid black
+  outline: 2px solid black
 .filterBoxTopRight
   display: flex
   flex-direction: column
@@ -133,7 +140,8 @@ h5
   display: flex
   flex-direction: column
   align-items: center
-  overflow: auto
+  overflow-x: auto
+
 .TaskBlockPriority
   min-width: 11vw
 .greenPriority
@@ -168,6 +176,8 @@ h5
 .TaskBlockCardTime
   font-family: "Montserrat", sans-serif
   font-size: 2vh
+.greenTask
+  background-color: yellowgreen
 
 
 
