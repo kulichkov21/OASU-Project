@@ -8,10 +8,12 @@ let tasksBlock = document.querySelector('._Tasks');
 let TasksCards;
 let CheckMark;
 let DeleteBox;
+let TaskBlockCardTop;
 let SortByPriority = document.getElementById('SortPrior');
 let SortByDate = document.getElementById('SortData');
 let filterStatusActive = document.getElementById('FilterCheckBoxActive');
 let filterStatusDone = document.getElementById('FilterCheckBoxDone');
+let searchText = document.getElementById('searchtext');
 let tasks = []; //Массив задач
 
 function Clean() {
@@ -23,7 +25,9 @@ function Clean() {
 function Recheck() {
     if (tasks[0]){
         tasks[0].Sort();
+
     }
+
     for (let i = 0; i < tasks.length; i++) {
         tasks[i].PriorityFilter();
     }
@@ -71,10 +75,13 @@ class Task {
         }
         if (DeleteBox[0]) {
             DeleteBox[0].addEventListener('click', function () {
-                event.target.parentNode.parentNode.style.display = 'none';
-                for (let i = 0; i < tasks.length; i++) {
-                    if (tasks[i].id == event.target.parentNode.parentNode.id) {
-                        tasks.splice(i, 1);
+                let check = confirm('Вы уверены?');
+                if (check) {
+                    event.target.parentNode.parentNode.style.display = 'none';
+                    for (let i = 0; i < tasks.length; i++) {
+                        if (tasks[i].id == event.target.parentNode.parentNode.id) {
+                            tasks.splice(i, 1);
+                        }
                     }
                 }
             })
@@ -170,7 +177,6 @@ class Task {
     //Фильтр по приоритету
     PriorityFilter() {
         //Получаем все критерии фильтров
-        this.Sort()
         let filter = 'Anyone';
         filter = this.takingUserPriority();
         if (!filterStatusDone.checked && !filterStatusActive.checked) {
@@ -184,6 +190,14 @@ class Task {
     Done() {
         this.done = true;
         this.active = false;
+    }
+    Find(){
+        let find = new RegExp(searchText.value, 'gi');
+        for (let i = 0; i < TaskBlockCardTop.length; i++){
+            if (!find.test(TaskBlockCardTop[i].textContent)){
+                TaskBlockCardTop[i].parentNode.parentNode.style.display = 'none';
+            }
+        }
     }
 }
 
@@ -251,6 +265,14 @@ SortByDate.addEventListener('click', function () {
     Recheck();
     Update();
 });
+
+searchText.addEventListener('click', function (){
+    TaskBlockCardTop = document.querySelectorAll('.TaskBlockCardTop');
+    if (tasks[0]){
+       tasks[0].Find();
+   }
+})
+
 
 
 console.log(tasks);
