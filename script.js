@@ -9,34 +9,35 @@ let TasksCards;
 let CheckMark;
 let DeleteBox;
 let TaskBlockCardTop;
+let TaskBlockCardText;
 let SortByPriority = document.getElementById('SortPrior');
 let SortByDate = document.getElementById('SortData');
 let filterStatusActive = document.getElementById('FilterCheckBoxActive');
 let filterStatusDone = document.getElementById('FilterCheckBoxDone');
 let searchText = document.getElementById('searchtext');
 let tasks = []; //Массив задач
-
+//Очищаем все блоки с задачами
 function Clean() {
     while (tasksBlock.firstChild) {
         tasksBlock.removeChild(tasksBlock.firstChild);
     }
 }
-
+//Делаем проверку по сортировкам и фильтрам
 function Recheck() {
     if (tasks[0]){
         tasks[0].Sort();
-
     }
-
     for (let i = 0; i < tasks.length; i++) {
         tasks[i].PriorityFilter();
     }
 }
-
+//Обновляем список элементов, которым нужны слушатели событий
 function Update() {
     CheckMark = [];
     CheckMark = document.querySelectorAll('.TaskBlockCardDone');
     DeleteBox = document.querySelectorAll('.deleteTask');
+    TaskBlockCardTop = document.querySelectorAll('.TaskBlockCardTop');
+    TaskBlockCardText = document.querySelectorAll('.TaskBlockCardText');
 }
 
 //Создаём функцию-конструктор объекта задач
@@ -49,7 +50,7 @@ class Task {
         this.done = false;
         this.date = new Date();
     }
-
+//Форматируем время для отрисовки
     FormatMinutes() {
         if (this.date.getMinutes() > 9) {
             return this.date.getMinutes();
@@ -62,19 +63,21 @@ class Task {
         tasksBlock.insertAdjacentHTML('afterbegin', this.generateHTML());
         Update();
         if (CheckMark[0]) {
-            CheckMark[0].addEventListener('click', function () {
+            CheckMark[0].addEventListener('click', function (event) {
                     event.target.parentNode.parentNode.classList.add('greenTask');
-                    event.target.style.display = 'none';
                     for (let task of tasks) {
                         if (task.id == event.target.parentNode.parentNode.parentNode.id) {
                             task.Done();
                         }
+                        else {
+                        }
                     }
+                event.target.parentNode.removeChild(event.target)
                 }
             )
         }
         if (DeleteBox[0]) {
-            DeleteBox[0].addEventListener('click', function () {
+            DeleteBox[0].addEventListener('click', function (event) {
                 let check = confirm('Вы уверены?');
                 if (check) {
                     event.target.parentNode.parentNode.style.display = 'none';
@@ -84,6 +87,24 @@ class Task {
                         }
                     }
                 }
+            })
+        }
+        if (TaskBlockCardText[0]) {
+            TaskBlockCardText[0].addEventListener('click', function (event){
+              if (event.target.parentNode.lastChild.className == 'TaskBlockCardDone') {
+                  let text = event.target.textContent;
+                  event.target.innerHTML = `<input type="text" value="${text}" class="editText">`;
+                  let editBlock = document.getElementsByClassName('editText');
+                  editBlock[0].addEventListener('contextmenu', function (event){
+                      event.preventDefault();
+                      for (let i = 0; i < tasks.length; i++) {
+                          if (tasks[i].id == event.target.parentNode.parentNode.parentNode.parentNode.id) {
+                              tasks[i].text = editBlock[0].value;
+                              event.target.parentNode.innerHTML =`<div className="TaskBlockCardText">${tasks[i].text}</div>`
+                          }
+                      }
+                  })
+              }
             })
         }
     }
@@ -105,7 +126,7 @@ class Task {
         } else {
             return ` <section class="TaskBlock" id="${this.id}"> 
                 <p class="TaskBlockPriority ${this.priorityColor()}">${this.convertPriority()}</p>
-                <section class="TaskBlockCard"><div class="TaskBlockCardTop">${this.text} <div class="TaskBlockCardDone">&#10004</div></div>
+                <section class="TaskBlockCard"><div class="TaskBlockCardTop"><div class="TaskBlockCardText">${this.text}</div> <div class="TaskBlockCardDone">&#10004</div></div>
                 <p class="TaskBlockCardTime">${this.getData()}</p></section>
                 <aside class="deleteTask"><img src="image/delete.svg" alt="delete" style="height: 8vh"></aside>
                </section>`
@@ -191,25 +212,34 @@ class Task {
         this.done = true;
         this.active = false;
     }
+    //Поиск по тексту
     Find(){
         let find = new RegExp(searchText.value, 'gi');
         for (let i = 0; i < TaskBlockCardTop.length; i++){
             if (!find.test(TaskBlockCardTop[i].textContent)){
                 TaskBlockCardTop[i].parentNode.parentNode.style.display = 'none';
             }
+            else if (find.test(TaskBlockCardTop[i].textContent)){
+                TaskBlockCardTop[i].parentNode.parentNode.style.display = 'flex';
+            }
         }
     }
 }
 
 addButton.addEventListener('click', function () {
-    let priority = selectPriority.value;
-    let text = textfield.value;
-    let id = Math.round(Math.random() * 10000000);
-    let task = new Task(priority, text, id);
-    tasks.push(task);
-    Clean();
-    Recheck();
-    Update();
+    if (textfield.value) {
+        let priority = selectPriority.value;
+        let text = textfield.value;
+        let id = Math.round(Math.random() * 10000000);
+        let task = new Task(priority, text, id);
+        tasks.push(task);
+        Clean();
+        Recheck();
+        Update();
+    }
+    else {
+        alert('Вы забыли ввести текст задачи.')
+    }
 });
 
 selectPriorityFilter.addEventListener('change', function () {
@@ -266,16 +296,13 @@ SortByDate.addEventListener('click', function () {
     Update();
 });
 
-searchText.addEventListener('click', function (){
+searchText.addEventListener('input', function (){
     TaskBlockCardTop = document.querySelectorAll('.TaskBlockCardTop');
     if (tasks[0]){
        tasks[0].Find();
    }
 })
 
-
-
-console.log(tasks);
 
 
 

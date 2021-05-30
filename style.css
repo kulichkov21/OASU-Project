@@ -7,17 +7,19 @@
 /* Выставил высоту и ширину страницы*/
 body {
   margin: 0 auto;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
 }
 
 /*Создание задачи*/
 .taskmanager {
-  width: 80vw;
+  width: 85%;
   background-color: #DCDCDC;
 }
 
 ._addTask {
+  display: flex;
+  justify-content: space-around;
   height: 10vh;
   display: flex;
   opacity: 0;
@@ -106,6 +108,10 @@ main {
   align-items: center;
 }
 
+._addButton, ._Tasks:hover {
+  cursor: pointer;
+}
+
 h5 {
   font-size: 2vh;
   font-family: "Montserrat", sans-serif;
@@ -172,6 +178,11 @@ h5 {
 
 .searchText {
   width: 65vw;
+}
+
+.editText {
+  width: 50vw;
+  height: 5vh;
 }
 
 .filterBoxBottom {
