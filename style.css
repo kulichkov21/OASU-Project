@@ -252,6 +252,7 @@ h5 {
 }
 
 .TaskBlockCard {
+  padding-left: 20px;
   width: 55vw;
   min-width: 40vw;
   min-height: inherit;
